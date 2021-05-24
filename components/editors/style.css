@@ -1,0 +1,11 @@
+.editor {
+  width: 100%;
+  height: 100%;
+  flex:1;
+  display: flex;
+  background-color: var(--color-white);
+}
+.customTextArea{
+  width: 100%;
+  height: 100%;
+}

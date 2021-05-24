@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
-import PropTypes from 'prop-types';
-import path from 'path';
-import classNames from 'classnames';
+import React, { useState, useEffect } from "react";
+import Head from "next/head";
+import PropTypes from "prop-types";
+import path from "path";
+import classNames from "classnames";
 
 import { listFiles } from '../files';
 
-// Used below, these need to be registered
-import MarkdownEditor from '../MarkdownEditor';
-import PlaintextEditor from '../components/PlaintextEditor';
+import MarkdownEditor from "../components/editors/MarkdownEditor"
+import PlaintextEditor from "../components/editors/PlaintextEditor";
+import CodeEditor from "../components/editors/CodeEditor";
 
 import IconPlaintextSVG from '../public/icon-plaintext.svg';
 import IconMarkdownSVG from '../public/icon-markdown.svg';
@@ -18,10 +18,10 @@ import IconJSONSVG from '../public/icon-json.svg';
 import css from './style.module.css';
 
 const TYPE_TO_ICON = {
-  'text/plain': IconPlaintextSVG,
-  'text/markdown': IconMarkdownSVG,
-  'text/javascript': IconJavaScriptSVG,
-  'application/json': IconJSONSVG
+  "text/plain": IconPlaintextSVG,
+  "text/markdown": IconMarkdownSVG,
+  "text/javascript": IconJavaScriptSVG,
+  "application/json": IconJSONSVG
 };
 
 function FilesTable({ files, activeFile, setActiveFile }) {
@@ -40,7 +40,7 @@ function FilesTable({ files, activeFile, setActiveFile }) {
               key={file.name}
               className={classNames(
                 css.row,
-                activeFile && activeFile.name === file.name ? css.active : ''
+                activeFile && activeFile.name === file.name ? css.active : ""
               )}
               onClick={() => setActiveFile(file)}
             >
@@ -55,11 +55,11 @@ function FilesTable({ files, activeFile, setActiveFile }) {
               </td>
 
               <td>
-                {new Date(file.lastModified).toLocaleDateString('en-US', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
+                {new Date(file.lastModified).toLocaleDateString("en-US", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric"
                 })}
               </td>
             </tr>
@@ -77,7 +77,7 @@ FilesTable.propTypes = {
 };
 
 function Previewer({ file }) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -99,8 +99,8 @@ Previewer.propTypes = {
 
 // Uncomment keys to register editors for media types
 const REGISTERED_EDITORS = {
-  // "text/plain": PlaintextEditor,
-  // "text/markdown": MarkdownEditor,
+  "text/plain": PlaintextEditor,
+  "text/markdown": MarkdownEditor,
 };
 
 function PlaintextFilesChallenge() {
@@ -113,27 +113,39 @@ function PlaintextFilesChallenge() {
   }, []);
 
   const write = file => {
-    console.log('Writing soon... ', file.name);
+    console.log("Writing... ", file.name);
+    console.log(file);
 
-    // TODO: Write the file to the `files` array
+    const result = files.find(e => e.name == file.name);
+    const index = files.indexOf(result);
+    
+    const buffer = files.slice();
+    buffer[index] = file;
+
+    console.log(files);
+    console.log(buffer);
+
+    setFiles(buffer);
+    setActiveFile(buffer[index]);
   };
 
-  const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
+  const Editor =  activeFile&&REGISTERED_EDITORS[activeFile.type] ? REGISTERED_EDITORS[activeFile.type] : CodeEditor;
 
   return (
     <div className={css.page}>
       <Head>
-        <title>Corsali Engineering Challenge</title>
+      <title>Corsali Engineering Challenge</title>
+        <link rel="stylesheet" href="https://nebulon.s3.amazonaws.com/react-mde/react-mde-all.css" />
       </Head>
       <aside>
-        <header>
-          <div className={css.tagline}>Corsali Engineering Challenge</div>
-          <h1>Fun With Plaintext</h1>
-          <div className={css.description}>
-            Let{"'"}s explore files in JavaScript. What could be more fun than
-            rendering and editing plaintext? Not much, as it turns out.
-          </div>
-        </header>
+      <header>
+        <div className={css.tagline}>Corsali Engineering Challenge</div>
+        <h1>Fun With Plaintext</h1>
+        <div className={css.description}>
+          Let{"'"}s explore files in JavaScript. What could be more fun than
+          rendering and editing plaintext? Not much, as it turns out.
+        </div>
+      </header>
 
         <FilesTable
           files={files}
@@ -144,14 +156,14 @@ function PlaintextFilesChallenge() {
         <div style={{ flex: 1 }}></div>
 
         <footer>
-          <div className={css.link}>
-            <a href="https://corsali.com/join">Corsali</a>
-            &nbsp;—&nbsp;Fullstack Engineering Challenge
-          </div>
-          <div className={css.link}>
-            Questions? Feedback? Email us at jobs@corsali.com
-          </div>
-        </footer>
+        <div className={css.link}>
+          <a href="https://corsali.com/join">Corsali</a>
+          &nbsp;—&nbsp;Fullstack Engineering Challenge
+        </div>
+        <div className={css.link}>
+          Questions? Feedback? Email us at jobs@corsali.com
+        </div>
+      </footer>
       </aside>
 
       <main className={css.editorWindow}>
