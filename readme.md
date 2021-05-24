@@ -8,6 +8,9 @@ This mini file editor is for editing files ranging from different types like mar
 - run `npm install && npm run dev`
 - Open `localhost:3000` in your browser
 
+# Note
+Internet may be needed because of the react-mde cdn being used
+
 ## DEVELOPMENT AND APP integration Guide:
 
 - app structure tree:

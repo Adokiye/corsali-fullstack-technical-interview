@@ -13,7 +13,7 @@ const converter = new Showdown.Converter({
   tasklists: true
 });
 
-function PlaintextEditor({ file, write }) {
+const PlaintextEditor=({ file, write })=> {
   const [value, setValue] = useState("");
   const [selectedTab, setSelectedTab] = useState('write');
 
@@ -44,9 +44,9 @@ function PlaintextEditor({ file, write }) {
 
   const selectTab = (tab) =>  tab == 'write' ? setSelectedTab('write') : setSelectedTab('preview');
 
-  const classes = {
-    textArea:css.customTextArea
-   }
+  // const classes = {
+  //   textArea:css.customTextArea
+  //  }
 
   return (
     <div className={css.editor}>

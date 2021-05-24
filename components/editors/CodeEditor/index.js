@@ -52,7 +52,7 @@ const CodeEditor = ({ file, write }) => {
   return mode ? (
     <div className={css.editor}>
     <Editor
-      placeholder="Placeholder Text"
+      placeholder="Corsali placeholder"
       mode={mode}
       theme="monokai"
       name="corsali-code-editor"

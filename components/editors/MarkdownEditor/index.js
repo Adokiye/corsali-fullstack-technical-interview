@@ -13,7 +13,7 @@ const converter = new Showdown.Converter({
   tasklists: true
 });
 
-function MarkdownEditor({ file, write }) {
+const MarkdownEditor=({ file, write })=> {
   console.log(file.name);
 
   const [value, setValue] = useState("");
